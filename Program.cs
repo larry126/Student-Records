@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
 
-namespace StudentRecords
+
+namespace Student_Records
 {
 	class Program
 	{
-		static List<string> records = new List<string>();
-
+		static List<Student> records = new List<Student>();
 		static void Main(string[] args)
 		{
 			Console.WriteLine("Welcome to Student Records");
-			ReadInFile();
 			bool keepGoing = true;
 			while (keepGoing)
 			{
+				ReadInFile();
 				Console.WriteLine("1 - ");
 				Console.WriteLine("2 - Find Student by index No.");
 				Console.WriteLine("3 - Find First Match");
@@ -51,15 +53,19 @@ namespace StudentRecords
 
 		static void ReadInFile()
 		{
-			Console.Write("Enter FileName: ");
-			string fileName = Console.ReadLine() + ".csv";
-			try
+			while (true)
 			{
-				ReadFileIntoRecordsArray(fileName);
-			}
-			catch (FileNotFoundException)
-			{
-				Console.WriteLine("File does not exist");
+				Console.Write("Please Enter FileName: ");
+				string fileName = Console.ReadLine() + ".csv";
+				try
+				{
+					ReadFileIntoRecordsArray(fileName);
+					break;
+				}
+				catch (FileNotFoundException)
+				{
+					Console.WriteLine("File does not exist");
+				}
 			}
 		}
 
@@ -101,7 +107,10 @@ namespace StudentRecords
 				int i = 0;
 				while (!reader.EndOfStream)
 				{
-					records.Add(reader.ReadLine());
+					//records.Add(reader.ReadLine());
+					string[] details = reader.ReadLine().Split(',');
+					records.Add(new Student(Convert.ToInt32(details[0]), details[1], details[2], Convert.ToDateTime(details[3])));
+					records[i].grade = Convert.ToChar(details[4]);
 					i++;
 				}
 			}
@@ -115,9 +124,9 @@ namespace StudentRecords
 
 		static void ListedAllRecords()
 		{
-			foreach (var record in records.OrderBy(g => g.Split(',')[4]))
+			foreach (var record in records.OrderBy(g => g.Number))
 			{
-				WriteRecordToConsole(record);
+				Student.Output(record);
 			}
 		}
 
