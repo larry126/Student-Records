@@ -13,22 +13,28 @@ namespace Student_Records
 		static List<Student> records = new List<Student>();
 		static void Main(string[] args)
 		{
+			ReadInFile();
 			Console.WriteLine("Welcome to Student Records");
 			bool keepGoing = true;
 			while (keepGoing)
 			{
-				ReadInFile();
 				Console.WriteLine("1 - ");
 				Console.WriteLine("2 - Find Student by index No.");
 				Console.WriteLine("3 - Find First Match");
 				Console.WriteLine("4 - Output All Records");
 				Console.WriteLine("5 - Find Student by Student No.");
+				Console.WriteLine("6 - Change the Grade of a student");
 				Console.WriteLine("9 - Quit");
 				Console.Write("Select an option: ");
 				char menuChoice = Console.ReadLine().ToCharArray()[0];
 				Console.WriteLine();
 				switch (menuChoice)
 				{
+					case '1':
+						Console.Write("Please Enter FileName: ");
+						string fileName = Console.ReadLine() + ".csv";
+						WriteRecordsIntoFile(fileName);
+						break;
 					case '2':
 						FindRecordByIndex();
 						break;
@@ -41,6 +47,9 @@ namespace Student_Records
 					case '5':
 						FindRecordByStudentNumber();
 						break;
+					case '6':
+						ChangeGrade();
+						break;
 					case '9':
 						keepGoing = false;
 						break;
@@ -51,53 +60,30 @@ namespace Student_Records
 			}
 		}
 
+		static void WriteRecordsIntoFile(string fileName)
+		{
+			using (StreamWriter writer = new StreamWriter(fileName))
+			{
+                foreach (var st in records)
+				{
+					writer.WriteLine(Convert.ToString(st.Number) + "," + st.firstName + "," + st.lastName + "," + st.DateOfBirth + "," + st.grade);
+				}
+				writer.Flush();
+			}
+		}
+
 		static void ReadInFile()
 		{
-			while (true)
-			{
-				Console.Write("Please Enter FileName: ");
-				string fileName = Console.ReadLine() + ".csv";
-				try
-				{
-					ReadFileIntoRecordsArray(fileName);
-					break;
-				}
-				catch (FileNotFoundException)
-				{
-					Console.WriteLine("File does not exist");
-				}
-			}
-		}
-
-		static void FindRecordByIndex()
-		{
-			Console.Write("Enter Index No. :");
+//			Console.Write("Please Enter FileName: ");
+//			string fileName = Console.ReadLine() + ".csv";
 			try
 			{
-				int index = Convert.ToInt32(Console.ReadLine());
-				WriteRecordToConsole(records[index]);
+				ReadFileIntoRecordsArray("Student Records.csv");
 			}
-			catch (IndexOutOfRangeException)
+			catch (FileNotFoundException)
 			{
-				Console.WriteLine("Not a valid index");
+				Console.WriteLine("File does not exist");
 			}
-			catch (FormatException)
-			{
-				Console.WriteLine("Not a number");
-			}
-		}
-
-		static void FindFirstMatch()
-		{
-			Console.Write("Enter a search string: ");
-			string searchString = Console.ReadLine();
-			var record = FindFirstMatch(searchString);
-			WriteRecordToConsole(record);
-		}
-
-		static string FindFirstMatch(string searchString)
-		{
-			return records.Where(r => r.Contains(searchString)).First();
 		}
 
 		static void ReadFileIntoRecordsArray(string fileName)
@@ -116,15 +102,50 @@ namespace Student_Records
 			}
 		}
 
-		static void WriteRecordToConsole(string record)
+		static void ChangeGrade()
 		{
-			var formatted = record.Replace(",", "\t");
-			Console.WriteLine(formatted);
+			Console.Write("Enter a search string: ");
+			string searchString = Console.ReadLine();
+			Console.Write("Enter the new Grade: ");
+			char grade = Convert.ToChar(Console.ReadLine());
+			records.Where(r => r.ConvertToString().Contains(searchString)).First().grade = grade;
+
+		}
+
+		static void FindFirstMatch()
+		{
+			Console.Write("Enter a search string: ");
+			string searchString = Console.ReadLine();
+			var record = FindFirstMatch(searchString);
+			Student.Output(record);
+		}
+
+		public static Student FindFirstMatch(string searchString)
+		{
+			return records.Where(r => r.ConvertToString().Contains(searchString)).First();
+		}
+
+		static void FindRecordByIndex()
+		{
+			Console.Write("Enter Index No. :");
+			try
+			{
+				int index = Convert.ToInt32(Console.ReadLine());
+				Student.Output(records[index]);
+			}
+			catch (IndexOutOfRangeException)
+			{
+				Console.WriteLine("Not a valid index");
+			}
+			catch (FormatException)
+			{
+				Console.WriteLine("Not a number");
+			}
 		}
 
 		static void ListedAllRecords()
 		{
-			foreach (var record in records.OrderBy(g => g.Number))
+			foreach (var record in records.OrderBy(l => l.lastName).ThenBy(f => f.firstName))
 			{
 				Student.Output(record);
 			}
@@ -135,10 +156,10 @@ namespace Student_Records
 			Console.Write("Enter Student No. :");
 			int number = Convert.ToInt32(Console.ReadLine());
 			//Get the number from the user
-			var record = records.Where(s => Convert.ToInt32(s.Split(',')[0]) == number).FirstOrDefault();
+			var record = records.Where(s => s.Number == number).FirstOrDefault();
 			if (record != null)
 			{
-				WriteRecordToConsole(record);
+				Student.Output(record);
 			}
 			else
 			{

@@ -29,5 +29,9 @@ namespace Student_Records
 		{
 			Console.WriteLine(Convert.ToString(st.Number) + "\t" + st.firstName + "\t" + st.lastName + "\t" + st.DateOfBirth + "\t" + st.grade);
 		}
+		public string ConvertToString()
+		{
+			return Number.ToString()+firstName+lastName+DateOfBirth+grade.ToString();
+		}
 	}
 }
