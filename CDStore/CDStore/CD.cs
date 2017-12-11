@@ -17,5 +17,10 @@ namespace CDStore
 		public virtual DateTime Published { get; set; }
 
 		public virtual List<Song> Songs { get; set; }
+
+		public CD()
+		{
+			this.Songs = new List<Song>();
+		}
 	}
 }
