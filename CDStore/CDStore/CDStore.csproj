@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Artist.cs" />
+    <Compile Include="CD.cs" />
     <Compile Include="CDStoreDbContext.cs" />
     <Compile Include="CustomInitializer.cs" />
     <Compile Include="Program.cs" />
