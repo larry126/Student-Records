@@ -37,9 +37,15 @@ namespace CDStore
             var name = Console.ReadLine();
             var artist = context.Artists.FirstOrDefault(a => a.Name.Contains(name));
             Console.WriteLine("Artist: " + artist.Name);
-        }
+//			Console.WriteLine("Songs" + "\n" + "Title" + '\t' + "Music Type");
+			foreach (Song s in artist.Songs)
+			{
+				Console.WriteLine(s.Title + '\t' + s.MusicType);
+			}
 
-        private static void ListArtists(CDStoreDbContext context)
+		}
+
+		private static void ListArtists(CDStoreDbContext context)
         {
             foreach (Artist a in context.Artists)
             {

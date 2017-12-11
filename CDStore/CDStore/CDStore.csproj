@@ -50,10 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Artist.cs" />
-    <Compile Include="CDStore.cs" />
-    <Compile Include="CDStoreDbContext - DbContext.cs" />
+    <Compile Include="CDStoreDbContext.cs" />
+    <Compile Include="CustomInitializer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Song.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
