@@ -33,5 +33,9 @@ namespace Student_Records
 		{
 			return Number.ToString()+firstName+lastName+DateOfBirth+grade.ToString();
 		}
+		public bool IsOverAge(int requiredAge)
+		{
+			return DateOfBirth.AddYears(requiredAge) <= DateTime.Today;
+		}
 	}
 }

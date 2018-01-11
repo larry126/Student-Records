@@ -71,7 +71,6 @@ namespace CDStore
 					var song = context.Songs.FirstOrDefault(st => st.Title.Contains(title));
 					songs.Add(song);
 				}
-				//moreSong = title.ToLower() == "q" ? false : true;
 			}
 			CD cd = new CD() { Title = cdTitle, RecordCompany = RC, Published = PD, Songs = songs};
 			Console.WriteLine("Saving ...");
@@ -130,7 +129,6 @@ namespace CDStore
             var name = Console.ReadLine();
             var artist = context.Artists.FirstOrDefault(a => a.Name.Contains(name));
             Console.WriteLine("Artist: " + artist.Name);
-//			Console.WriteLine("Songs" + "\n" + "Title" + '\t' + "Music Type");
 			foreach (Song s in artist.Songs)
 			{
 				Console.WriteLine(s.Title + '\t' + s.MusicType);
